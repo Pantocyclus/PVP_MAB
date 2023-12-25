@@ -7392,7 +7392,7 @@ export function Exp3IX(): number {
 }
 */
 ;// CONCATENATED MODULE: ./src/lib.ts
-var lib_templateObject, lib_templateObject2, lib_templateObject3, lib_templateObject4, lib_templateObject5;
+var lib_templateObject, lib_templateObject2, lib_templateObject3, lib_templateObject4, lib_templateObject5, lib_templateObject6, lib_templateObject7;
 
 function src_lib_slicedToArray(arr, i) { return src_lib_arrayWithHoles(arr) || src_lib_iterableToArrayLimit(arr, i) || src_lib_unsupportedIterableToArray(arr, i) || src_lib_nonIterableRest(); }
 
@@ -7455,6 +7455,10 @@ function usePunchingMirror() {
   if (!have(template_string_$item(lib_templateObject4 || (lib_templateObject4 = lib_taggedTemplateLiteral(["punching mirror"])))) || property_get("_punchingMirrorUsed", false)) return; // eslint-disable-next-line libram/verify-constants
 
   (0,external_kolmafia_namespaceObject.use)(template_string_$item(lib_templateObject5 || (lib_templateObject5 = lib_taggedTemplateLiteral(["punching mirror"]))));
+}
+function useDiploma() {
+  if (!have(template_string_$item(lib_templateObject6 || (lib_templateObject6 = lib_taggedTemplateLiteral(["School of Hard Knocks Diploma"])))) || property_get("_hardKnocksDiplomaUsed")) return;
+  (0,external_kolmafia_namespaceObject.use)(template_string_$item(lib_templateObject7 || (lib_templateObject7 = lib_taggedTemplateLiteral(["School of Hard Knocks Diploma"]))));
 }
 function breakStone() {
   if (!args.breakStone && !(0,external_kolmafia_namespaceObject.hippyStoneBroken)()) {
@@ -7736,6 +7740,7 @@ function main() {
 
   breakStone();
   useMeteoriteade();
+  useDiploma();
   usePunchingMirror();
   updateSeason();
   updateWinRate();
