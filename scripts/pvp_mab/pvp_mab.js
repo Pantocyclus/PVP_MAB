@@ -10573,7 +10573,7 @@ function initializeSortedPvpIDs() {
   sortedPvpIDs = activeMinisSorted.map(sortedMini => activeMinis.indexOf(activeMinis.reduce((a, b) => Qe(a, sortedMini) > Qe(b, sortedMini) ? a : b)));
 
   if (!sortedPvpIDs.every((id, i) => id >= 0 && id < activeMinis.length && sortedPvpIDs.indexOf(id) === i)) {
-    sortedPvpIDs.forEach((sortedId, id) => (0,external_kolmafia_namespaceObject.print)("Mapping ".concat(activeMinis[sortedId], " to ").concat(activeMinisSorted[id])));
+    sortedPvpIDs.forEach((sortedID, id) => (0,external_kolmafia_namespaceObject.print)("Mapping ".concat(activeMinis[sortedID], " to ").concat(activeMinisSorted[id])));
     throw new Error("Error with sortedPvpIDs: ".concat(sortedPvpIDs, "!"));
   }
 
@@ -10776,6 +10776,7 @@ function updateExp3IXWeights(miniID: number, result: boolean): void {
 
 
 
+
 function parseCompactMode(result, whoAreWe) {
   var slicedResult = result;
   var whoAmI = whoAreWe[0],
@@ -10787,7 +10788,7 @@ function parseCompactMode(result, whoAreWe) {
     slicedResult = slicedResult.slice(slicedResult.indexOf("<td nowrap>"));
     var curString = slicedResult.slice(0, slicedResult.indexOf("</td></tr>") + 9);
     var mini = ((_curString$match$map = (_curString$match = curString.match(RegExp(/<td nowrap><b>(.*?)<\/b><\/td>/))) === null || _curString$match === void 0 ? void 0 : _curString$match.map(s => s.replace("<td nowrap><b>", "").replace("</b></td>", ""))) !== null && _curString$match$map !== void 0 ? _curString$match$map : ["unknown mini"])[0];
-    var miniID = activeMinisSorted.findIndex(sortedMini => sortedMini === mini);
+    var miniID = activeMinisSorted.indexOf(activeMinisSorted.reduce((a, b) => Qe(a, mini) > Qe(b, mini) ? a : b));
     if (curString.includes("A tie-breaker")) (0,external_kolmafia_namespaceObject.print)("We tied the mini: ".concat(mini), "blue");else {
       // The winner is whosever's name is bolded
       var weWon = false;
@@ -10826,7 +10827,7 @@ function parseNonCompactMode(result, whoAreWe) {
     var splitIdx = slicedResult.slice(5).includes("Round ") ? slicedResult.slice(5).indexOf("Round ") + 5 : slicedResult.indexOf('<div class="final">');
     var curString = slicedResult.slice(0, splitIdx);
     var mini = ((_curString$match$map2 = (_curString$match2 = curString.match(RegExp(/<b class="miniclick">(.*?)<\/b>/))) === null || _curString$match2 === void 0 ? void 0 : _curString$match2.map(s => s.replace('<b class="miniclick">', "").replace("</b>", ""))) !== null && _curString$match$map2 !== void 0 ? _curString$match$map2 : ["unknown mini"])[0];
-    var miniID = activeMinisSorted.findIndex(sortedMini => sortedMini === mini);
+    var miniID = activeMinisSorted.indexOf(activeMinisSorted.reduce((a, b) => Qe(a, mini) > Qe(b, mini) ? a : b));
 
     if (curString.includes("A tie-breaker")) {
       if (verbose) (0,external_kolmafia_namespaceObject.print)("We tied the mini: ".concat(mini), "blue");
