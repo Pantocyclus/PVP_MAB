@@ -1,1 +1,1 @@
-https://github.com/loathers/UberPvPOptimizer
+github https://github.com/loathers/UberPvPOptimizer
