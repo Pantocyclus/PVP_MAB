@@ -10670,6 +10670,8 @@ function pvpAttack(attackType) {
   var pvpChoice = getBestMini();
   (0,external_kolmafia_namespaceObject.print)("");
   (0,external_kolmafia_namespaceObject.print)("Chose mini: ".concat(activeMinis[pvpChoice]), "green");
+  var beforePVPScriptName = property_get("beforePVPScript");
+  if (beforePVPScriptName.length > 0) (0,external_kolmafia_namespaceObject.cliExecute)(beforePVPScriptName);
   return (0,external_kolmafia_namespaceObject.visitUrl)("peevpee.php?action=fight&place=fight&ranked=1&stance=".concat(pvpChoice, "&attacktype=").concat(attackType, "&pwd"));
 }
 function printStats() {
