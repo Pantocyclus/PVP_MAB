@@ -10629,8 +10629,9 @@ function updateSeason() {
   var _visitUrl$match;
 
   var currentSeason = Array.from((_visitUrl$match = (0,external_kolmafia_namespaceObject.visitUrl)("peevpee.php?place=rules").match(RegExp(/<b>Current Season: <\/b>(.*?)( \\(Post-Season\\))?<br \/>/))) !== null && _visitUrl$match !== void 0 ? _visitUrl$match : ["", "0"])[1];
-  if (property_get("myCurrentPVPSeason", "") === currentSeason) return;
-  if (!(0,external_kolmafia_namespaceObject.hippyStoneBroken)()) throw new Error("We cannot update the season until you've broken your stone!"); // Reset wins and losses (pad all at 7 wins 7 losses [prime numbers good])
+  if (property_get("myCurrentPVPSeason", "") === currentSeason && property_get("totalSeasonPVPWins", 0) + property_get("totalSeasonPVPLosses", 0) > 0) return;
+  if (!(0,external_kolmafia_namespaceObject.hippyStoneBroken)()) throw new Error("We cannot update the season until you've broken your stone!");
+  if (pvpIDs.length === 0) throw new Error("There are current no valid PVP minis!"); // Reset wins and losses (pad all at 7 wins 7 losses [prime numbers good])
 
   pvpIDs.forEach(i => {
     _set("myCurrentPVPWins_".concat(i), 7);

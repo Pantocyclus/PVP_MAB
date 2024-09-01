@@ -41,7 +41,7 @@ It is clear then, we need to attribute to exploration a certain value. The more 
 Scenario 3<br/>
 Mini 1: 49W/51L (49.0% winrate over 100 fites)<br/>
 Mini 2: 1W/99L (1.0% winrate over 100 fites)<br/>
-Mini 3: 500W/500L (50.0 winrate over 100 fites)<br/>
+Mini 3: 500W/500L (50.0 winrate over 1000 fites)<br/>
 
 In Scenario 3, we can be pretty confident that Mini 2 will not have a true winrate anywhere close to Mini 3's 50% winrate - i.e. there is almost no value in exploring Mini 2 any further. Intuitively, there is, however, potential value in exploring Mini 1 further. But how much more data do we need? (In fact, did we really need to play out Mini 2 100 times to determine that it was bad? Could we have cut our losses earlier?)
 
