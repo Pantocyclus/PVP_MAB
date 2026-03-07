@@ -7300,7 +7300,7 @@ function strategies_arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function UCB() {
   if (args.debug) (0,external_kolmafia_namespaceObject.print)("Using UCB strategy", "blue");
-  var fightRecords = getFightRecords();
+  var fightRecords = getMutatedFightRecords();
   var t = Math.max(1, sumNumbers(fightRecords.map(_ref => {
     var _ref2 = strategies_slicedToArray(_ref, 2),
         wins = _ref2[0],
@@ -7324,7 +7324,7 @@ function UCB() {
 }
 function gaussianThompson() {
   if (args.debug) (0,external_kolmafia_namespaceObject.print)("Using Gaussian Thompson strategy", "blue");
-  var fightRecords = getFightRecords();
+  var fightRecords = getMutatedFightRecords();
   var payoffs = pvpIDs.map(i => {
     var _fightRecords$i2 = strategies_slicedToArray(fightRecords[i], 2),
         wins = _fightRecords$i2[0],
@@ -7339,7 +7339,7 @@ function gaussianThompson() {
 }
 function bernoulliThompson() {
   if (args.debug) (0,external_kolmafia_namespaceObject.print)("Using Bernoulli Thompson strategy", "blue");
-  var fightRecords = getFightRecords();
+  var fightRecords = getMutatedFightRecords();
   var payoffs = pvpIDs.map(i => {
     var _fightRecords$i3 = strategies_slicedToArray(fightRecords[i], 2),
         wins = _fightRecords$i3[0],
@@ -7353,7 +7353,7 @@ function bernoulliThompson() {
 }
 function epsilonGreedy() {
   if (args.debug) (0,external_kolmafia_namespaceObject.print)("Using Epsilon Greedy strategy", "blue");
-  var fightRecords = getFightRecords();
+  var fightRecords = getMutatedFightRecords();
   var t = Math.max(1, sumNumbers(fightRecords.map(_ref3 => {
     var _ref4 = strategies_slicedToArray(_ref3, 2),
         wins = _ref4[0],
@@ -10590,12 +10590,13 @@ function initializeSortedPvpIDs() {
     throw new Error("Error with mapping!");
   }
 }
-var verbose = !property_get("PVP_MAB_reduced_verbosity", false);
-function getFightRecords() {
+var verbose = !property_get("PVP_MAB_reduced_verbosity", false); // We add 7 to wins & losses for math reasons, as mentioned here: https://github.com/Pantocyclus/PVP_MAB/issues/8#issuecomment-4013324340
+
+function getMutatedFightRecords() {
   return pvpIDs.map(i => {
     var wins = property_get("myCurrentPVPWins_".concat(i), 0);
     var losses = property_get("myCurrentPVPLosses_".concat(i), 0);
-    return [wins, losses];
+    return [wins + 7, losses + 7];
   });
 }
 function getBestMini() {
@@ -10632,15 +10633,14 @@ function breakStone() {
 function updateSeason() {
   var _visitUrl$match;
 
-  var currentSeason = Array.from((_visitUrl$match = (0,external_kolmafia_namespaceObject.visitUrl)("peevpee.php?place=rules").match(RegExp(/<b>Current Season: <\/b>(.*?)( \\(Post-Season\\))?<br \/>/))) !== null && _visitUrl$match !== void 0 ? _visitUrl$match : ["", "0"])[1];
+  var currentSeason = Array.from((_visitUrl$match = (0,external_kolmafia_namespaceObject.visitUrl)("peevpee.php?place=rules").match(RegExp(/<b>Current Season: <\/b>(.*?)( \(Post-Season\))?<br \/>/))) !== null && _visitUrl$match !== void 0 ? _visitUrl$match : ["", "0"])[1];
   if (!args.reset && property_get("myCurrentPVPSeason", "") === currentSeason && property_get("totalSeasonPVPWins", 0) + property_get("totalSeasonPVPLosses", 0) > 0) return;
   if (!(0,external_kolmafia_namespaceObject.hippyStoneBroken)()) throw new Error("We cannot update the season until you've broken your stone!");
-  if (pvpIDs.length === 0) throw new Error("There are current no valid PVP minis!"); // Reset wins and losses (pad all at 7 wins 7 losses [prime numbers good])
+  if (pvpIDs.length === 0) throw new Error("There are current no valid PVP minis!"); // Reset wins and losses
 
   pvpIDs.forEach(i => {
-    _set("myCurrentPVPWins_".concat(i), 7);
-    _set("myCurrentPVPLosses_".concat(i), 7);
-    _set("myCurrentPVPMini_".concat(i), "");
+    _set("myCurrentPVPWins_".concat(i), 0);
+    _set("myCurrentPVPLosses_".concat(i), 0);
     _set("myCurrentPVPMini_".concat(i), activeMinisSorted[i]);
   });
   /*
@@ -10690,7 +10690,7 @@ function printStats() {
   });
 }
 function printStrategiesEstimates() {
-  var fightRecords = getFightRecords();
+  var fightRecords = getMutatedFightRecords();
   var t = Math.max(1, sumNumbers(fightRecords.map(_ref => {
     var _ref2 = src_lib_slicedToArray(_ref, 2),
         wins = _ref2[0],
@@ -10916,7 +10916,9 @@ function main() {
   updateSeason();
   updateWinRate();
   var todaysWins = property_get("todaysPVPWins", 0),
-      todaysLosses = property_get("todaysPVPLosses", 0);
+      todaysLosses = property_get("todaysPVPLosses", 0),
+      seasonWins = property_get("totalSeasonPVPWins", 0),
+      seasonLosses = property_get("totalSeasonPVPLosses", 0);
 
   if ((0,external_kolmafia_namespaceObject.pvpAttacksLeft)() > 0) {
     initializeSortedPvpIDs();
@@ -10933,7 +10935,13 @@ function main() {
         break;
       }
 
-      parseResult(result) ? _set("todaysPVPWins", todaysWins += 1) : _set("todaysPVPLosses", todaysLosses += 1);
+      if (parseResult(result)) {
+        _set("todaysPVPWins", todaysWins += 1);
+        _set("totalSeasonPVPWins", seasonWins += 1);
+      } else {
+        _set("todaysPVPLosses", todaysLosses += 1);
+        _set("totalSeasonPVPLosses", seasonLosses += 1);
+      }
     }
 
     _set("logPreferenceChange", prefChangeSettings);
