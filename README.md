@@ -18,6 +18,13 @@ git checkout https://github.com/Pantocyclus/PVP_MAB.git release
 
 To run the script, simply type `PVP_MAB` into the CLI. It accepts arguments (loot|fame|flowers) to set the PVP attack type, and (UCB|bernoulliThompson|gaussianThompson|epsilonGreedy) to set the strategy (i.e. `PVP_MAB target=fame strategy=UCB`), and defaults to fame (HC)/loot (otherwise) for attack and bernoulliThompson for strategy.
 
+It's not advised to use the flag `ranked` to fight tougher opponents for more fame gain and +1 swagger, unless you're very confident.
+
+You can control the pvp win/loss messages by setting the KoLMafia properties `defaultFlowerWinMessage` and `defaultFlowerLossMessage`.
+These have no message by default. Set them by running `set pref_name=message` in gCLI, eg:
+`set defaultFlowerLossMessage=I knew 'ranked' wasn't a good idea!`
+`set defaultFlowerWinMessage=I win so many fights when I don't use 'ranked'!`
+
 ## Why do I need a Multi-Armed Bandit PVP script?
 
 [Flogger](https://github.com/DamianDominoDavis/kol-flogger) is a good way of keeping track of your PVP stats, which then provides you with the necessary information to determine which is your best mini. However, consider the following scenarios/stats.

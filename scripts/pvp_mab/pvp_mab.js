@@ -7240,6 +7240,10 @@ var args = Args.create("pvp_mab", "A multi-armed bandit script for pvp", {
     // ["Exp3IX"],
     ["bernoulliThompson"], ["epsilonGreedy"], ["gaussianThompson"]]
   }, x => x, "multi-armed bandit strategy"),
+  ranked: Args.flag({
+    help: "Fight random tougher opponents for +1 swagger and increased fame gain",
+    default: false
+  }),
   no_optimize: Args.flag({
     help: "Skip the uberpvpoptimizer step",
     default: false
@@ -10677,7 +10681,7 @@ function pvpAttack(attackType) {
   (0,external_kolmafia_namespaceObject.print)("Chose mini: ".concat(activeMinis[pvpChoice]), "green");
   var beforePVPScriptName = property_get("beforePVPScript");
   if (beforePVPScriptName.length > 0) (0,external_kolmafia_namespaceObject.cliExecute)(beforePVPScriptName);
-  return (0,external_kolmafia_namespaceObject.visitUrl)("peevpee.php?action=fight&place=fight&ranked=1&stance=".concat(pvpChoice, "&attacktype=").concat(attackType, "&pwd"));
+  return (0,external_kolmafia_namespaceObject.visitUrl)("peevpee.php?action=fight&place=fight&ranked=".concat(args.ranked ? 2 : 1, "&stance=").concat(pvpChoice, "&attacktype=").concat(attackType, "&losemessage=").concat((0,external_kolmafia_namespaceObject.urlEncode)(property_get("defaultFlowerLossMessage")), "&winmessage=").concat((0,external_kolmafia_namespaceObject.urlEncode)(property_get("defaultFlowerWinMessage")), "&pwd"), true, true);
 }
 function printStats() {
   (0,external_kolmafia_namespaceObject.print)("");
