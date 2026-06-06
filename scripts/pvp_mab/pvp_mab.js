@@ -10928,27 +10928,30 @@ function main() {
     initializeSortedPvpIDs();
     var attackType = args.target === "loot" ? "lootwhatever" : args.target;
     equipPVPOutfit();
-    _set("logPreferenceChange", false);
 
-    while ((0,external_kolmafia_namespaceObject.pvpAttacksLeft)() > 0) {
-      if (args.debug) printStrategiesEstimates();
-      var result = pvpAttack(attackType);
+    try {
+      _set("logPreferenceChange", false);
 
-      if (result.includes("Sorry, I couldn't find the player")) {
-        (0,external_kolmafia_namespaceObject.print)("Could not find anyone to fight!", "red");
-        break;
+      while ((0,external_kolmafia_namespaceObject.pvpAttacksLeft)() > 0) {
+        if (args.debug) printStrategiesEstimates();
+        var result = pvpAttack(attackType);
+
+        if (result.includes("Sorry, I couldn't find the player")) {
+          (0,external_kolmafia_namespaceObject.print)("Could not find anyone to fight!", "red");
+          break;
+        }
+
+        if (parseResult(result)) {
+          _set("todaysPVPWins", todaysWins += 1);
+          _set("totalSeasonPVPWins", seasonWins += 1);
+        } else {
+          _set("todaysPVPLosses", todaysLosses += 1);
+          _set("totalSeasonPVPLosses", seasonLosses += 1);
+        }
       }
-
-      if (parseResult(result)) {
-        _set("todaysPVPWins", todaysWins += 1);
-        _set("totalSeasonPVPWins", seasonWins += 1);
-      } else {
-        _set("todaysPVPLosses", todaysLosses += 1);
-        _set("totalSeasonPVPLosses", seasonLosses += 1);
-      }
+    } finally {
+      _set("logPreferenceChange", prefChangeSettings);
     }
-
-    _set("logPreferenceChange", prefChangeSettings);
   } else {
     (0,external_kolmafia_namespaceObject.print)("Out of PVP fights", "red");
   }
