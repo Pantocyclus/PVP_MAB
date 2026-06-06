@@ -47,24 +47,27 @@ export function main(argstring = ""): void {
     const attackType = args.target === "loot" ? "lootwhatever" : args.target;
     equipPVPOutfit();
 
-    set("logPreferenceChange", false);
-    while (pvpAttacksLeft() > 0) {
-      if (args.debug) printStrategiesEstimates();
-      const result = pvpAttack(attackType);
-      if (result.includes("Sorry, I couldn't find the player")) {
-        print("Could not find anyone to fight!", "red");
-        break;
+    try {
+      set("logPreferenceChange", false);
+      while (pvpAttacksLeft() > 0) {
+        if (args.debug) printStrategiesEstimates();
+        const result = pvpAttack(attackType);
+        if (result.includes("Sorry, I couldn't find the player")) {
+          print("Could not find anyone to fight!", "red");
+          break;
+        }
+  
+        if (parseResult(result)) {
+          set("todaysPVPWins", (todaysWins += 1));
+          set("totalSeasonPVPWins", (seasonWins += 1));
+        } else {
+          set("todaysPVPLosses", (todaysLosses += 1));
+          set("totalSeasonPVPLosses", (seasonLosses += 1));
+        }
       }
-
-      if (parseResult(result)) {
-        set("todaysPVPWins", (todaysWins += 1));
-        set("totalSeasonPVPWins", (seasonWins += 1));
-      } else {
-        set("todaysPVPLosses", (todaysLosses += 1));
-        set("totalSeasonPVPLosses", (seasonLosses += 1));
-      }
+    } finally {
+      set("logPreferenceChange", prefChangeSettings);
     }
-    set("logPreferenceChange", prefChangeSettings);
   } else {
     print("Out of PVP fights", "red");
   }
